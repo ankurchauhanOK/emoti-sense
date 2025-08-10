@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL. */
 
 @layer base {
   :root {
@@ -36,23 +35,40 @@ All colors MUST be HSL.
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Brand & gradients */
+    --brand: 240 63% 10%; /* deep navy */
+    --hero-accent-1: 258 90% 66%; /* violet */
+    --hero-accent-2: 195 90% 60%; /* aqua */
+    --hero-accent-3: 320 86% 70%; /* magenta */
+
+    --gradient-hero: 
+      radial-gradient(60rem 30rem at 20% 10%, hsl(var(--hero-accent-1) / 0.25), transparent 40%),
+      radial-gradient(50rem 25rem at 80% 30%, hsl(var(--hero-accent-2) / 0.25), transparent 45%),
+      radial-gradient(40rem 20rem at 30% 80%, hsl(var(--hero-accent-3) / 0.20), transparent 50%),
+      linear-gradient(180deg, hsl(240 33% 12%), hsl(258 22% 18%));
+
+    /* Sentiment gradients */
+    --positive-1: 152 64% 45%;
+    --positive-2: 160 84% 74%;
+    --neutral-1: 228 60% 60%;
+    --neutral-2: 258 70% 78%;
+    --negative-1: 0 85% 62%;
+    --negative-2: 12 90% 72%;
+
+    /* Shadows */
+    --shadow-elegant: 0 12px 30px -12px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--hero-accent-2) / 0.35);
   }
 
   .dark {
@@ -83,6 +99,7 @@ All colors MUST be HSL.
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -92,14 +109,108 @@ All colors MUST be HSL.
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-urbanist;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Hero background utility */
+  .bg-hero {
+    background-image: var(--gradient-hero);
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background-color: hsl(var(--card) / 0.55);
+    @apply backdrop-blur-xl border shadow-sm;
+  }
+
+  /* Premium button variants (used via button variants) */
+  .btn-hero {
+    background-image: linear-gradient(135deg, hsl(var(--hero-accent-1)), hsl(var(--hero-accent-2)));
+    color: hsl(var(--primary-foreground));
+    @apply border border-white/10 shadow-md;
+  }
+  .btn-hero:hover {
+    filter: brightness(1.05);
+    box-shadow: var(--shadow-elegant);
+  }
+  .btn-glow {
+    background-image: linear-gradient(135deg, hsl(var(--hero-accent-2)), hsl(var(--hero-accent-3)));
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-glow);
+    @apply border border-white/10;
+  }
+
+  /* Badge sentiment styles */
+  .badge-positive {
+    background-image: linear-gradient(135deg, hsl(var(--positive-1)), hsl(var(--positive-2)));
+    color: hsl(210 40% 98%);
+    border-color: transparent;
+  }
+  .badge-neutral {
+    background-image: linear-gradient(135deg, hsl(var(--neutral-1)), hsl(var(--neutral-2)));
+    color: hsl(210 40% 98%);
+    border-color: transparent;
+  }
+  .badge-negative {
+    background-image: linear-gradient(135deg, hsl(var(--negative-1)), hsl(var(--negative-2)));
+    color: hsl(210 40% 98%);
+    border-color: transparent;
+  }
+
+  /* Summary glow cards */
+  .summary-positive {
+    box-shadow: 0 0 0 1px hsl(var(--border)), 0 0 64px hsl(var(--positive-1) / 0.35);
+    background: linear-gradient(180deg, hsl(var(--card) / 0.7), hsl(var(--card) / 0.5));
+    @apply backdrop-blur-xl;
+  }
+  .summary-neutral {
+    box-shadow: 0 0 0 1px hsl(var(--border)), 0 0 64px hsl(var(--neutral-1) / 0.35);
+    background: linear-gradient(180deg, hsl(var(--card) / 0.7), hsl(var(--card) / 0.5));
+    @apply backdrop-blur-xl;
+  }
+  .summary-negative {
+    box-shadow: 0 0 0 1px hsl(var(--border)), 0 0 64px hsl(var(--negative-1) / 0.35);
+    background: linear-gradient(180deg, hsl(var(--card) / 0.7), hsl(var(--card) / 0.5));
+    @apply backdrop-blur-xl;
+  }
+
+  /* Spectrum progress fill (red → yellow → green) */
+  .progress-spectrum {
+    background-image: linear-gradient(90deg, hsl(var(--negative-1)), hsl(45 95% 60%), hsl(var(--positive-1)));
+  }
+}
+
+@layer utilities {
+  /* Floating blobs */
+  .blob {
+    @apply absolute rounded-full blur-3xl opacity-40 pointer-events-none;
+    background: radial-gradient(circle, hsl(var(--hero-accent-1) / 0.5), transparent 60%);
+    filter: saturate(120%);
+  }
+
+  .hover-scale { @apply transition-transform duration-200 hover:scale-105; }
+
+  .story-link * {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
 }
